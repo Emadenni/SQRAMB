@@ -1,10 +1,7 @@
-import "./App.scss"
+import "./landingPage.scss"
 import  { useState, useEffect } from 'react';
-
-
-
-const App = () => {
-  const [message, setMessage] = useState('');
+const LandingPage = () => {
+const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,11 +18,10 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Message from Backend:</h1>
-      <p>{message}</p>
+    <div className='landingPage-container'>
+      
     </div>
   );
 };
 
-export default App;
+export default LandingPage;

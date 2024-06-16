@@ -1,0 +1,9 @@
+@use "./src/sass/" as * ;
+
+.landingPage-container {
+    width: 60vw;
+    height: 100vh;
+    background-color: map-get($style-page-colors, "yellow" );
+    margin: auto;
+    border-radius: 10px;
+}
