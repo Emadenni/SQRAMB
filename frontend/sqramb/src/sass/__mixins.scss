@@ -4,3 +4,10 @@
     justify-content: $justify;
     align-items: $align;
   }
+
+  @mixin apply-font($font-map) {
+    font-family: map-get($font-map, family);
+    font-optical-sizing: map-get($font-map, optical-sizing);
+    font-weight: map-get($font-map, weight);
+    font-style: map-get($font-map, style);
+  }

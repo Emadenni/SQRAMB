@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Here i am');
 });
 
 app.listen(PORT, () => {

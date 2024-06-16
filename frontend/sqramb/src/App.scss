@@ -1,9 +1,13 @@
-@use "./src/sass/" as * ;
+@use "./src/sass/" as *;
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap');
 
-body {
-  background-color: $background-pages-color;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* body {
-  background-color:black;
-} */
+body {
+  background-image: url(../src/assets/images/TextureBkg2.png);
+  opacity: 0.90;
+}

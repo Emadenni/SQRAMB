@@ -1,6 +1,6 @@
 import "./App.scss"
 import  { useState, useEffect } from 'react';
-
+import Frame from "./components/Frame/Frame";
 
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
 
   return (
     <div>
+      <Frame />
       <h1>Message from Backend:</h1>
       <p>{message}</p>
     </div>
