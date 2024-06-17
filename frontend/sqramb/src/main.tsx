@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./pages/Landing-page/LandingPage";
 import App from "./App";
+import SignUpPage from "./pages/Landing-page/SignUpPage/SignUpPage";
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/test",
     element: <App />,
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
   },
 ]);
 const rootElement = document.getElementById("root");

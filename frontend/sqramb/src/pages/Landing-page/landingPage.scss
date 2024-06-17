@@ -7,6 +7,7 @@
   margin: auto;
   border-radius: 10px;
   @include flex(column, space-between, center);
+  box-shadow: 10px 11px 7px 0px rgba(0,0,0,0.75);
 
   &__main {
     width: 25vw;

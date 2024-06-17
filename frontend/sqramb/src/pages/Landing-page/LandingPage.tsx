@@ -1,5 +1,6 @@
 import "./landingPage.scss";
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+/* import { useState, useEffect } from "react"; */
 import Frame from "../../components/Frame/Frame";
 import Logo from "../../assets/images/logoImg.png";
 const LandingPage = () => {
@@ -48,6 +49,7 @@ const LandingPage = () => {
             required
           />
 
+
           <button type="submit" className="loginForm__button">
             GO
           </button>
@@ -56,7 +58,9 @@ const LandingPage = () => {
 
 <article className="signUpAction">
   <p>or</p>
-  <a href="">SIGN IN HERE</a>
+  <Link to="/signup">
+  <p>SIGN IN HERE</p>
+  </Link>
 </article>
 
       </main>
