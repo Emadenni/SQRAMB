@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./pages/Landing-page/LandingPage";
 import App from "./App";
-import SignUpPage from "./pages/Landing-page/SignUpPage/SignUpPage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 
 const router = createBrowserRouter([
   {

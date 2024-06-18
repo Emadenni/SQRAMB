@@ -1,7 +1,7 @@
 @use "./src/sass/" as *;
 
 .standard-page-container {
-  width: 40vw;
+  width: 40%;
   height: 100vh;
   background-color: map-get($style-page-colors, "yellow");
   margin: auto;
