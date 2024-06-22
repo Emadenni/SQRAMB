@@ -1,0 +1,47 @@
+@use "./src/sass/" as *;
+
+.reg-form {
+  height: 1600px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  * {
+    height: 38px;
+    border-radius: 6px;
+    font-family: $primary-font-family;
+    font-size: 18px;
+    padding: 8px;
+    background-color: map-get($style-page-colors, "cyan");
+  }
+
+  input {
+    &::placeholder {
+      color: map-get($style-page-colors, "blue");
+      opacity: 0.8;
+      font-weight: 800;
+    }
+  }
+
+  &__terms-box {
+    display: flex;
+    height: 50px;
+
+    input {
+      width: 24px;
+    }
+  }
+
+  button {
+    width: 200px;
+    height: 60px;
+    align-self: center;
+    margin:40px auto;
+    font-size: 30px;
+    padding: 5px;
+    background-color: map-get($style-page-colors, "gray");
+    color: map-get($style-page-colors, "blue");
+    font-weight: 800;
+    border: solid 1px white;
+  }
+}
