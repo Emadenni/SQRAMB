@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import "./registrationForm.scss";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, FocusEvent } from "react";
 
 interface FormState {
   username: string;
@@ -29,11 +30,11 @@ const RegistrationForm = () => {
   };
 
   const [form, setForm] = useState<FormState>(initialFormState);
+  const [isDateInputVisible, setIsDateInputVisible] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
 
-    // Gestione specifica per checkbox
     if (type === "checkbox") {
       const isChecked = (e.target as HTMLInputElement).checked;
       setForm((prevForm) => ({
@@ -51,8 +52,18 @@ const RegistrationForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", form);
-    // Esempio di come potresti resettare il form dopo l'invio
-    setForm(initialFormState); // Resetta il form agli stati iniziali
+
+    setForm(initialFormState);
+  };
+
+  const handleDateFocus = () => {
+    setIsDateInputVisible(true);
+  };
+
+  const handleDateBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (!e.target.value) {
+      setIsDateInputVisible(false);
+    }
   };
 
   return (
@@ -115,7 +126,26 @@ const RegistrationForm = () => {
         placeholder="Phone Number"
       />
 
-      <input type="date" id="dob" name="dob" value={form.dob} onChange={handleChange} placeholder="Date Of Birth" />
+      <div className="date-input-wrapper">
+        {!isDateInputVisible && (
+          <input
+            type="text"
+            placeholder="Date of Birth"
+            onFocus={handleDateFocus}
+            className="placeholder-input"
+          />
+        )}
+        {isDateInputVisible && (
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            value={form.dob}
+            onChange={handleChange}
+            onBlur={handleDateBlur}
+          />
+        )}
+      </div>
 
       <select id="gender" name="gender" value={form.gender} onChange={handleChange}>
         <option value="male">Male</option>
@@ -137,6 +167,7 @@ const RegistrationForm = () => {
         <input type="checkbox" id="terms" name="terms" checked={form.terms} onChange={handleChange} required />
         <label htmlFor="terms"> I agree to the Terms and Conditions </label>
       </div>
+      <Link to= "/terms">  <p>Read Terms And Conditions</p>  </Link>
       <button type="submit">Register</button>
     </form>
   );

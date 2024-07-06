@@ -1,34 +1,69 @@
 @use "./src/sass/" as *;
 
 .reg-form {
-  height: 1600px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+  max-height: 1500px;
 
-  * {
+  @include flex(column);
+  gap: 18px;
+
+  input,
+  select {
     height: 38px;
     border-radius: 6px;
     font-family: $primary-font-family;
     font-size: 18px;
     padding: 8px;
     background-color: map-get($style-page-colors, "cyan");
-  }
 
-  input {
     &::placeholder {
       color: map-get($style-page-colors, "blue");
       opacity: 0.8;
       font-weight: 800;
+    }
+
+    &[type="date"] {
+      height: 38px;
+    }
+  }
+
+  .date-input-wrapper {
+    position: relative;
+
+    .placeholder-input {
+      height: 38px;
+      border-radius: 6px;
+      font-family: $primary-font-family;
+      font-size: 18px;
+      padding: 8px;
+      background-color: map-get($style-page-colors, "cyan");
+      color: map-get($style-page-colors, "blue");
+
+      font-weight: 800;
+      width: 100%;
+    }
+
+    #dob {
+      width: 100%;
     }
   }
 
   &__terms-box {
     display: flex;
     height: 50px;
-
+    background-color: map-get($style-page-colors, "cyan");
+    border-radius: 6px;
+    padding: 4px;
+    @include flex(default, center, center);
+    
     input {
-      width: 24px;
+      width: 20px;
+    }
+
+    label {
+      margin-top: 16px;
+      margin-left: 5px;
+    }
+
     }
   }
 
@@ -36,12 +71,20 @@
     width: 200px;
     height: 60px;
     align-self: center;
-    margin:40px auto;
+    margin: 40px auto;
     font-size: 30px;
     padding: 5px;
     background-color: map-get($style-page-colors, "gray");
     color: map-get($style-page-colors, "blue");
     font-weight: 800;
     border: solid 1px white;
+    border-radius: 6px;
+    font-family: $primary-font-family;
+    
   }
-}
+
+  p {
+    text-align: center;
+    color: white;
+  }
+
