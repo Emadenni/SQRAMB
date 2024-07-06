@@ -6,14 +6,12 @@
   gap: 1px;
   font-family: $primary-font-family;
 
-  width: 100%; // Permette al main di crescere per occupare lo spazio disponibile
-   overflow-y: auto; // Abilita lo scroll verticale
-   padding: 140px; // Aggiunge padding per evitare che il contenuto tocchi i bordi
-   box-sizing: border-box; // Include il padding nel calcolo dell'altezza
+  width: 100%; 
+  overflow-y: auto; // Abilita lo scroll 
+  padding: 150px; 
 
   img {
     width: 100px;
-
   }
 
   h1 {

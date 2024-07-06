@@ -9,20 +9,12 @@
   width: 60%;
   height: 100vh; // Usa height invece di max-height per renderlo fisso
   background-image: url("../../assets/images/bkgLayout.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: auto;
   border-radius: 10px;
   @include flex(column, space-between, center);
-  box-shadow: 10px 11px 7px 0px rgba(0,0,0,0.75);
-  overflow: hidden; // Nascondi l'overflow per evitare lo scroll del contenitore fisso
-
-/*   main {
-    height: calc(100% - 40px);
-   width: 100%; // Permette al main di crescere per occupare lo spazio disponibile
-    overflow-y: auto; // Abilita lo scroll verticale
-    padding: 20px; // Aggiunge padding per evitare che il contenuto tocchi i bordi
-    box-sizing: border-box; // Include il padding nel calcolo dell'altezza
-  } */
+  box-shadow: 10px 11px 7px 0px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
 }

@@ -4,7 +4,7 @@
   max-height: 1500px;
 
   @include flex(column);
-  gap: 18px;
+  gap: 24px;
 
   input,
   select {
@@ -37,11 +37,13 @@
       padding: 8px;
       background-color: map-get($style-page-colors, "cyan");
       color: map-get($style-page-colors, "blue");
-
+      margin-top: 15px;
       font-weight: 800;
       width: 100%;
     }
-
+    div {
+      margin-top: 3px;
+    }
     #dob {
       width: 100%;
     }
@@ -54,7 +56,7 @@
     border-radius: 6px;
     padding: 4px;
     @include flex(default, center, center);
-    
+
     input {
       width: 20px;
     }
@@ -62,29 +64,32 @@
     label {
       margin-top: 16px;
       margin-left: 5px;
-    }
-
+      color: map-get($style-page-colors, "blue");
     }
   }
 
-  button {
-    width: 200px;
-    height: 60px;
-    align-self: center;
-    margin: 40px auto;
-    font-size: 30px;
-    padding: 5px;
-    background-color: map-get($style-page-colors, "gray");
-    color: map-get($style-page-colors, "blue");
-    font-weight: 800;
-    border: solid 1px white;
-    border-radius: 6px;
-    font-family: $primary-font-family;
-    
-  }
-
-  p {
-    text-align: center;
+  div {
     color: white;
+    margin-top: -15px;
   }
+}
 
+button {
+  width: 200px;
+  height: 60px;
+  align-self: center;
+  font-size: 30px;
+  padding: 5px;
+  background-color: map-get($style-page-colors, "gray");
+  color: map-get($style-page-colors, "blue");
+  font-weight: 800;
+  border: solid 1px white;
+  border-radius: 6px;
+  font-family: $primary-font-family;
+}
+
+p {
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+}

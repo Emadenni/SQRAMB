@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import "./registrationForm.scss";
-import React, { ChangeEvent, useState, FocusEvent } from "react";
+import { Link } from "react-router-dom";
 
+// Definisci l'interfaccia FormState per tipizzare il form
 interface FormState {
   username: string;
   email: string;
@@ -11,164 +14,209 @@ interface FormState {
   phoneNumber: string;
   dob: string;
   gender: string;
-  address: string;
+  city: string;
+  country: string;
   terms: boolean;
 }
 
-const RegistrationForm = () => {
-  const initialFormState: FormState = {
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    fullName: "",
-    phoneNumber: "",
-    dob: "",
-    gender: "",
-    address: "",
-    terms: false,
-  };
+// Inizializza i valori del form
+const initialFormState: FormState = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  fullName: "",
+  phoneNumber: "",
+  dob: "",
+  gender: "",
+  city: "",
+  country: "",
+  terms: false,
+};
 
-  const [form, setForm] = useState<FormState>(initialFormState);
+// Schema di validazione con Yup
+const validationSchema = Yup.object({
+  username: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string().required("Required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Required"),
+  fullName: Yup.string().required("Required"),
+  phoneNumber: Yup.string().required("Required"),
+  dob: Yup.string().required("Required"),
+  gender: Yup.string().required("Required"),
+  city: Yup.string().required("Required"),
+  country: Yup.string().required("Required"),
+  terms: Yup.boolean().oneOf([true], "You must accept the terms and conditions").required("Required"),
+});
+
+const RegistrationForm: React.FC = () => {
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const formik = useFormik<FormState>({
+    initialValues: initialFormState,
+    validationSchema,
+    onSubmit: (values) => {
+      console.log("Form submitted:", values);
 
-    if (type === "checkbox") {
-      const isChecked = (e.target as HTMLInputElement).checked;
-      setForm((prevForm) => ({
-        ...prevForm,
-        [name]: isChecked,
-      }));
-    } else {
-      setForm((prevForm) => ({
-        ...prevForm,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted:", form);
-
-    setForm(initialFormState);
-  };
+      formik.resetForm();
+    },
+  });
 
   const handleDateFocus = () => {
     setIsDateInputVisible(true);
   };
 
-  const handleDateBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleDateBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (!e.target.value) {
       setIsDateInputVisible(false);
     }
+    formik.handleBlur(e);
   };
 
   return (
-    <form className="reg-form" onSubmit={handleSubmit}>
+    <form className="reg-form" onSubmit={formik.handleSubmit}>
       <input
         type="text"
         id="username"
         name="username"
-        value={form.username}
-        onChange={handleChange}
-        placeholder="username"
-        required
+        value={formik.values.username}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        placeholder="Username"
       />
+      {formik.touched.username && formik.errors.username ? <div>{formik.errors.username}</div> : null}
 
       <input
         type="email"
         id="email"
         name="email"
-        value={form.email}
-        onChange={handleChange}
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         placeholder="E-mail"
-        required
       />
+      {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
 
       <input
         type="password"
         id="password"
         name="password"
-        value={form.password}
-        onChange={handleChange}
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         placeholder="Password"
-        required
       />
+      {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
 
       <input
         type="password"
         id="confirmPassword"
         name="confirmPassword"
-        value={form.confirmPassword}
-        onChange={handleChange}
+        value={formik.values.confirmPassword}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         placeholder="Confirm Password"
-        required
       />
+      {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+        <div>{formik.errors.confirmPassword}</div>
+      ) : null}
 
       <input
         type="text"
         id="fullName"
         name="fullName"
-        value={form.fullName}
-        onChange={handleChange}
+        value={formik.values.fullName}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         placeholder="Full Name"
       />
+      {formik.touched.fullName && formik.errors.fullName ? <div>{formik.errors.fullName}</div> : null}
 
       <input
         type="tel"
         id="phoneNumber"
         name="phoneNumber"
-        value={form.phoneNumber}
-        onChange={handleChange}
+        value={formik.values.phoneNumber}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         placeholder="Phone Number"
       />
+      {formik.touched.phoneNumber && formik.errors.phoneNumber ? <div>{formik.errors.phoneNumber}</div> : null}
 
       <div className="date-input-wrapper">
         {!isDateInputVisible && (
-          <input
-            type="text"
-            placeholder="Date of Birth"
-            onFocus={handleDateFocus}
-            className="placeholder-input"
-          />
+          <input type="text" placeholder="Date of Birth" onFocus={handleDateFocus} className="placeholder-input" />
         )}
         {isDateInputVisible && (
           <input
             type="date"
             id="dob"
             name="dob"
-            value={form.dob}
-            onChange={handleChange}
+            value={formik.values.dob}
+            onChange={formik.handleChange}
             onBlur={handleDateBlur}
           />
         )}
+        {formik.touched.dob && formik.errors.dob ? <div>{formik.errors.dob}</div> : null}
       </div>
 
-      <select id="gender" name="gender" value={form.gender} onChange={handleChange}>
+      <select
+        id="gender"
+        name="gender"
+        value={formik.values.gender}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      >
+        <option value="">Select Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
         <option value="other">Other</option>
         <option value="prefer-not-to-say">Prefer not to say</option>
       </select>
+      {formik.touched.gender && formik.errors.gender ? <div>{formik.errors.gender}</div> : null}
 
       <input
         type="text"
-        id="address"
-        name="address"
-        value={form.address}
-        onChange={handleChange}
-        placeholder="Address"
+        id="city"
+        name="city"
+        value={formik.values.city}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        placeholder="City"
       />
+      {formik.touched.city && formik.errors.city ? <div className="error-message">{formik.errors.city}</div> : null}
 
+      <input
+        type="text"
+        id="country"
+        name="country"
+        value={formik.values.country}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        placeholder="Country"
+      />
+      {formik.touched.country && formik.errors.country ? <div>{formik.errors.country}</div> : null}
+        <br />
       <div className="reg-form__terms-box">
-        <input type="checkbox" id="terms" name="terms" checked={form.terms} onChange={handleChange} required />
-        <label htmlFor="terms"> I agree to the Terms and Conditions </label>
+        <input
+          type="checkbox"
+          id="terms"
+          name="terms"
+          checked={formik.values.terms}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        <label htmlFor="terms">I agree to the Terms and Conditions</label>
       </div>
-      <Link to= "/terms">  <p>Read Terms And Conditions</p>  </Link>
+      {formik.touched.terms && formik.errors.terms ? <div>{formik.errors.terms}</div> : null}
+
+      <Link to="/terms">
+        <p>Read Terms And Conditions</p>
+      </Link>
       <button type="submit">Register</button>
+     
     </form>
   );
 };
