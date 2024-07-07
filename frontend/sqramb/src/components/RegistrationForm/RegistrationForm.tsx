@@ -49,7 +49,6 @@ const validationSchema = Yup.object({
   gender: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
   country: Yup.string().required("Required"),
-  state: Yup.string().required("Required"), // Validazione per lo stato
   terms: Yup.boolean().oneOf([true], "You must accept the terms and conditions").required("Required"),
 });
 
@@ -60,9 +59,27 @@ const RegistrationForm: React.FC = () => {
   const formik = useFormik<FormState>({
     initialValues: initialFormState,
     validationSchema,
-    onSubmit: (values) => {
-      console.log("Form submitted:", values);
-      formik.resetForm();
+    onSubmit: async (values) => {
+      try {
+        const response = await fetch("http://localhost:5001/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to register user");
+        }
+
+        const data = await response.json();
+        console.log("User registered successfully:", data);
+
+        formik.resetForm();
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
     },
   });
 
@@ -78,8 +95,8 @@ const RegistrationForm: React.FC = () => {
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    formik.handleChange(event); // Gestisce il cambiamento del paese
-    formik.setFieldValue("state", ""); // Resetta lo stato quando si cambia il paese
+    formik.handleChange(event);
+    formik.setFieldValue("state", "");
   };
 
   const openTermsOverlay = () => {
