@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./registrationForm.scss";
-import { Link } from "react-router-dom";
+import TermsAndConditions from "../TermsAndConditions/TermsAndConditions";
+import countries from "react-select-country-list"; 
 
-// Definisci l'interfaccia FormState per tipizzare il form
 interface FormState {
   username: string;
   email: string;
@@ -16,10 +16,11 @@ interface FormState {
   gender: string;
   city: string;
   country: string;
+  state: string;
   terms: boolean;
 }
 
-// Inizializza i valori del form
+
 const initialFormState: FormState = {
   username: "",
   email: "",
@@ -31,6 +32,7 @@ const initialFormState: FormState = {
   gender: "",
   city: "",
   country: "",
+  state: "", 
   terms: false,
 };
 
@@ -48,21 +50,25 @@ const validationSchema = Yup.object({
   gender: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
   country: Yup.string().required("Required"),
+  state: Yup.string().required("Required"), // Validazione per lo stato
   terms: Yup.boolean().oneOf([true], "You must accept the terms and conditions").required("Required"),
 });
 
 const RegistrationForm: React.FC = () => {
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
+  const [states, setStates] = useState<string[]>([]); 
+  const [isTermsOverlayOpen, setIsTermsOverlayOpen] = useState(false);
 
   const formik = useFormik<FormState>({
     initialValues: initialFormState,
     validationSchema,
     onSubmit: (values) => {
       console.log("Form submitted:", values);
-
       formik.resetForm();
     },
   });
+
+
 
   const handleDateFocus = () => {
     setIsDateInputVisible(true);
@@ -75,7 +81,21 @@ const RegistrationForm: React.FC = () => {
     formik.handleBlur(e);
   };
 
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    formik.handleChange(event); // Gestisce il cambiamento del paese
+    formik.setFieldValue("state", ""); // Resetta lo stato quando si cambia il paese
+  };
+
+  const openTermsOverlay = () => {
+    setIsTermsOverlayOpen(true);
+  };
+
+  const closeTermsOverlay = () => {
+    setIsTermsOverlayOpen(false);
+  };
+
   return (
+    <>
     <form className="reg-form" onSubmit={formik.handleSubmit}>
       <input
         type="text"
@@ -188,17 +208,26 @@ const RegistrationForm: React.FC = () => {
       />
       {formik.touched.city && formik.errors.city ? <div className="error-message">{formik.errors.city}</div> : null}
 
-      <input
-        type="text"
+      <select
         id="country"
         name="country"
         value={formik.values.country}
-        onChange={formik.handleChange}
+        onChange={handleCountryChange}
         onBlur={formik.handleBlur}
-        placeholder="Country"
-      />
-      {formik.touched.country && formik.errors.country ? <div>{formik.errors.country}</div> : null}
-        <br />
+      >
+        <option value="">Select Country</option>
+        {countries()
+          .getData()
+          .map((country: any) => (
+            <option key={country.label} value={country.label}>
+              {country.label}
+            </option>
+          ))}
+      </select>
+      {formik.touched.country && formik.errors.country ? (
+        <div className="error-message">{formik.errors.country}</div>
+      ) : null}
+
       <div className="reg-form__terms-box">
         <input
           type="checkbox"
@@ -212,12 +241,12 @@ const RegistrationForm: React.FC = () => {
       </div>
       {formik.touched.terms && formik.errors.terms ? <div>{formik.errors.terms}</div> : null}
 
-      <Link to="/terms">
-        <p>Read Terms And Conditions</p>
-      </Link>
+      <p onClick={openTermsOverlay} className="terms-par">Read Terms And Conditions</p>
       <button type="submit">Register</button>
-     
+      
     </form>
+  <TermsAndConditions isOpen={isTermsOverlayOpen} onClose={closeTermsOverlay}/>   
+  </>
   );
 };
 

@@ -1,14 +1,13 @@
 @use "./src/sass/" as *;
 
 .reg-form {
-  max-height: 1500px;
-
+  max-height: 1600px;
   @include flex(column);
   gap: 24px;
 
   input,
   select {
-    height: 38px;
+    height: 40px;
     border-radius: 6px;
     font-family: $primary-font-family;
     font-size: 18px;
@@ -56,7 +55,6 @@
     border-radius: 6px;
     padding: 4px;
     @include flex(default, center, center);
-
     input {
       width: 20px;
     }
@@ -76,7 +74,6 @@
 
 button {
   width: 200px;
-  height: 60px;
   align-self: center;
   font-size: 30px;
   padding: 5px;
@@ -86,10 +83,20 @@ button {
   border: solid 1px white;
   border-radius: 6px;
   font-family: $primary-font-family;
+  margin-top: -20px;
+  margin-bottom: 50px;
+  cursor: pointer;
 }
 
-p {
+.terms-par {
   text-align: center;
-  color: white;
+  color: map-get($style-page-colors, "blue");
   margin-bottom: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.terms-par:hover {
+  color: rgb(4, 2, 2);
+  scale: 1.1;
 }
