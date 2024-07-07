@@ -13,9 +13,9 @@ const Layout:React.FC<LayoutProps> =({children, className}) =>{
         <>
         <div className= {`standard-page-container ${className}`}>
         <Frame />
-        <main>
+     
             {children}
-        </main>
+     
         <Frame />
            
         </div>

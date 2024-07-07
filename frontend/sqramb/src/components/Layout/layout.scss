@@ -1,11 +1,21 @@
 @use "./src/sass/" as *;
 
 .standard-page-container {
-  width: 40%;
-  height: 100vh;
-  background-color: map-get($style-page-colors, "yellow");
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 60%;
+  height: 100vh; // Usa height invece di max-height per renderlo fisso
+  background-image: url("../../assets/images/bkgLayout.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: auto;
   border-radius: 10px;
   @include flex(column, space-between, center);
-  box-shadow: 10px 11px 7px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 11px 7px 0px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+  gap: 10px;
 }
