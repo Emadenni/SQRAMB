@@ -1,19 +1,24 @@
 const User = require("../models/user-model");
+const JWT_SECRET = process.env.JWT_SECRET;
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 
 exports.registerUser = async (req, res) => {
   const { username, email, password, confirmPassword, fullName, phoneNumber, dob, gender, city, country, terms } =
     req.body;
 
-  // Controlla se le password corrispondono
   if (password !== confirmPassword) {
     return res.status(400).json({ message: "Passwords do not match" });
   }
 
   try {
-    // Controlla se l'email è già in uso
-    let existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already in use" });
+      if (existingUser.username === username) {
+        return res.status(400).json({ message: "Username already taken" });
+      } else if (existingUser.email === email) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
     }
 
     const user = new User({
@@ -34,5 +39,29 @@ exports.registerUser = async (req, res) => {
   } catch (err) {
     console.error("Error registering user:", err);
     res.status(500).json({ message: "Failed to register user" });
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { identifier, password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { username: identifier }],
+    });
+
+    if (!user) {
+      return res.status(400).json({message:"Invalid email/username or password"});
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({message:"Invalid email/username or password"});
+    }
+
+    const token = jwt.sign({ id:user._id}, JWT_SECRET, { expiresIn : "1h"});
+    res.status(200).json({token})
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
   }
 };
