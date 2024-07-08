@@ -59,26 +59,32 @@ const RegistrationForm: React.FC = () => {
   const formik = useFormik<FormState>({
     initialValues: initialFormState,
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setFieldError }) => {
       try {
-        const response = await fetch("http://localhost:5001/api/register", {
-          method: "POST",
+        const response = await fetch('http://localhost:your_port/api/register', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(values),
         });
 
         if (!response.ok) {
-          throw new Error("Failed to register user");
+          const data = await response.json();
+          if (data.message === 'Username already taken') {
+            setFieldError('username', 'Username already taken');
+          } else if (data.message === 'Email already in use') {
+            setFieldError('email', 'Email already in use');
+          } else {
+            throw new Error(data.message || 'Failed to register user');
+          }
         }
 
         const data = await response.json();
-        console.log("User registered successfully:", data);
-
+        console.log('User registered successfully:', data);
         formik.resetForm();
       } catch (error) {
-        console.error("Error registering user:", error);
+        console.error('Error registering user:', error);
       }
     },
   });
@@ -95,8 +101,8 @@ const RegistrationForm: React.FC = () => {
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    formik.handleChange(event);
-    formik.setFieldValue("state", "");
+    formik.handleChange(event); 
+    formik.setFieldValue('state', '');
   };
 
   const openTermsOverlay = () => {
