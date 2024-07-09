@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Frame from '../../components/Frame/Frame'; // Assicurati di importare correttamente il componente Frame
-import Logo from '../../assets/images/logoImg.png'; // Assicurati di importare correttamente il logo
-import './landingPage.scss'; // Assicurati di avere lo stile CSS correttamente configurato
+import Frame from '../../components/Frame/Frame';
+import Logo from '../../assets/images/logoImg.png';
+import './landingPage.scss';
 
 const LandingPage = () => {
   const [loginData, setLoginData] = useState({
     identifier: '',
     password: '',
   });
-  const [error, setError] = useState<string>(''); // Specifica manualmente il tipo di error
+  const [error, setError] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,9 +21,10 @@ const LandingPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     try {
-      const response = await fetch('http://127.0.0.1:5001/api/login', {
+      const response = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,10 +37,8 @@ const LandingPage = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token); // Salva il token JWT nel localStorage
-
-      // Esempio di reindirizzamento dopo il login
-      window.location.href = '/dashboard'; // Cambia '/dashboard' con la tua pagina di destinazione
+      localStorage.setItem('token', data.token);
+      window.location.href = '/dashboard';
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Something went wrong');
     }
