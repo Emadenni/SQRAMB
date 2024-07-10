@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./registrationForm.scss";
 import TermsAndConditions from "../TermsAndConditions/TermsAndConditions";
 import countries from "react-select-country-list";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate per il reindirizzamento
 
 interface FormState {
   username: string;
@@ -35,11 +36,14 @@ const initialFormState: FormState = {
   terms: false,
 };
 
-// Schema di validazione con Yup
 const validationSchema = Yup.object({
   username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
-  password: Yup.string().required("Required"),
+  password: Yup.string()
+    .required("Required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Required"),
@@ -55,28 +59,55 @@ const validationSchema = Yup.object({
 const RegistrationForm: React.FC = () => {
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
   const [isTermsOverlayOpen, setIsTermsOverlayOpen] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false); // Stato per il messaggio di conferma
+  const navigate = useNavigate(); // Usa useNavigate per il reindirizzamento
 
   const formik = useFormik<FormState>({
     initialValues: initialFormState,
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setFieldError }) => {
+      // Pulisci i dati prima di inviarli
+      const cleanedData = {
+        username: values.username.trim(),
+        email: values.email.trim().toLowerCase(),
+        password: values.password.trim(),
+        confirmPassword: values.confirmPassword.trim(),
+        fullName: values.fullName.trim(),
+        phoneNumber: values.phoneNumber.trim(),
+        dob: values.dob,
+        gender: values.gender,
+        city: values.city.trim(),
+        country: values.country,
+        state: values.state.trim(),
+        terms: values.terms,
+      };
+
       try {
         const response = await fetch("http://localhost:5001/api/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(cleanedData),
         });
 
         if (!response.ok) {
-          throw new Error("Failed to register user");
+          const data = await response.json();
+          if (data.message === "Username already taken") {
+            setFieldError("username", "Username already taken");
+          } else if (data.message === "Email already in use") {
+            setFieldError("email", "Email already in use");
+          } else {
+            throw new Error(data.message || "Failed to register user");
+          }
+        } else {
+          setRegistrationSuccess(true); 
+          formik.resetForm();
+          alert('Registration successful! Redirecting to login page...');
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
         }
-
-        const data = await response.json();
-        console.log("User registered successfully:", data);
-
-        formik.resetForm();
       } catch (error) {
         console.error("Error registering user:", error);
       }
@@ -260,6 +291,8 @@ const RegistrationForm: React.FC = () => {
         <button type="submit">Register</button>
       </form>
       <TermsAndConditions isOpen={isTermsOverlayOpen} onClose={closeTermsOverlay} />
+
+     
     </>
   );
 };

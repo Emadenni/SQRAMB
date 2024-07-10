@@ -18,7 +18,8 @@
     @include flex(column, center, center);
     gap: 10px;
     padding-bottom: 20px;
-    margin-bottom: 20px;
+    margin: 20px ;
+    overflow: hidden;
 
     h2 {
       margin-bottom: 50px;
@@ -26,7 +27,6 @@
       font-weight: 900;
       font-size: 30px;
       color: map-get($style-page-colors, "blue");
-      margin-bottom: 50px;
     }
 
     hr {
@@ -43,13 +43,15 @@
   border-radius: 0px;
   width: 36vw;
   height: 22vh;
-  margin-top: 20px
+  margin-top: 20px;
 }
 
 .loginForm {
-  @include flex(column, space-around, center);
+  @include flex(column, center, center);
   gap: 20px;
   width: 100%;
+
+  max-height: 100%;
 
   &__input {
     background-color: map-get($style-page-colors, "cyan");
