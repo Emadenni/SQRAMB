@@ -36,11 +36,14 @@ const initialFormState: FormState = {
   terms: false,
 };
 
-// Schema di validazione con Yup
 const validationSchema = Yup.object({
   username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
-  password: Yup.string().required("Required"),
+  password: Yup.string()
+    .required("Required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .matches(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Required"),
