@@ -18,11 +18,10 @@ const LandingPage = () => {
       [name]: value,
     });
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const apiUrl = import.meta.env.VITE_API_URL;
-
+  
     try {
       const response = await fetch(`${apiUrl}/login`, {
         method: 'POST',
@@ -31,19 +30,24 @@ const LandingPage = () => {
         },
         body: JSON.stringify(loginData),
       });
-
+  
       if (!response.ok) {
         throw new Error('Invalid username or password');
       }
-
+  
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      const token = data.token;
+      const tokenTimestamp = new Date().getTime().toString();
+      
+      localStorage.setItem('token', token);
+      localStorage.setItem('tokenTimestamp', tokenTimestamp);
+  
       window.location.href = '/dashboard';
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Something went wrong');
     }
   };
-
+  
   return (
     <div className="landingPage-container">
       <Frame />
