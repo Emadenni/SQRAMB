@@ -1,32 +1,39 @@
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LandingPage from "./pages/Landing-page/LandingPage";
-import App from "./App";
-import SignUpPage from "./pages/SignUp/SignUp";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LandingPage from './pages/Landing-page/LandingPage';
+import App from './App';
+import SignUpPage from './pages/SignUp/SignUp';
+import Dashboard from './pages/Dashboard/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <LandingPage />,
   },
   {
-    path: "/test",
+    path: '/test',
     element: <App />,
   },
   {
-    path: "/signup",
+    path: '/signup',
     element: <SignUpPage />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
   },
 ]);
-const rootElement = document.getElementById("root");
+
+const rootElement = document.getElementById('root');
 
 if (rootElement) {
   createRoot(rootElement).render(<RouterProvider router={router} />);
 } else {
-  console.error("Root element not found");
+  console.error('Root element not found');
 }

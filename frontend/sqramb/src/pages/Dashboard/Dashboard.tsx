@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useEffect } from 'react';
+import Layout from '../../components/Layout/Layout';
 
-type Props = {};
+const Dashboard = () => {
+  useEffect(() => {
+    const checkTokenExpiration = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:your_port/api/protected-route', {
+            headers: {
+              'Authorization': token,
+            },
+          });
 
-const Dashboard = (props: Props) => {
+          if (response.status === 403) {
+            alert('Session expired. Please log in again.');
+            window.location.href = '/'; // Reindirizza alla pagina di login o alla landing page
+          }
+        } catch (error) {
+          console.error('Error verifying token:', error);
+        }
+      } else {
+        window.location.href = '/'; // Se non c'è un token nel localStorage, reindirizza alla pagina di login o alla landing page
+      }
+    };
+
+    checkTokenExpiration();
+  }, []);
+
   return (
     <div>
-      <h1>you are inlogged</h1>
+      <Layout />
     </div>
   );
 };
