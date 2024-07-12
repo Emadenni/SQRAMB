@@ -16,15 +16,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         if (!userResponse) {
           handleSessionExpired();
         } else {
-          startLogoutTimer(); // Riavvia il timer se l'utente ha premuto OK
+          startLogoutTimer(); 
         }
-      }, 30000); // 30 secondi
+      }, 3000000); 
     };
 
     const handleSessionExpired = () => {
       localStorage.removeItem('token');
       localStorage.removeItem('tokenTimestamp');
-      window.location.href = '/'; // Reindirizza l'utente alla pagina di login
+      window.location.href = '/';
     };
 
     const resetLogoutTimer = () => {
@@ -34,14 +34,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       startLogoutTimer();
     };
 
-    // Avvia il timer di logout all'avvio del componente
+   
     startLogoutTimer();
 
-    // Resetta il timer di logout quando l'utente interagisce con il componente
+
     document.addEventListener('mousedown', resetLogoutTimer);
     document.addEventListener('keydown', resetLogoutTimer);
 
-    // Pulisce gli event listener quando il componente viene smontato
+
     return () => {
       if (logoutTimer) {
         clearTimeout(logoutTimer);

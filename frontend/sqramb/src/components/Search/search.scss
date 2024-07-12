@@ -1,0 +1,46 @@
+@use "./src/sass/" as *;
+
+.search-container {
+    position: relative;
+    width: 300px; 
+    height: 80%;
+    margin: auto;
+         color: map-get($style-page-colors, "blue");
+  }
+  
+  .search-container input[type="search"] {
+    width: 100%;
+    padding: 10px 20px;
+    padding-right: 20px; 
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    font-size: 20px;
+    font-family: $primary-font-family;
+    color: map-get($style-page-colors, "blue");
+  }
+  
+  .search-container input[type="search"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .search-container button {
+    position: absolute;
+    left: 155px;
+    top: 81%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 38px;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .search-container button:hover {
+    color: #007bff;
+  }
+  

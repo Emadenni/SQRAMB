@@ -1,0 +1,69 @@
+@use "./src/sass/" as *;
+
+.dashboard-container {
+  @include flex(column, center, center);
+  gap: 10px;
+  width: 100%;
+
+  &__header {
+    width: 100%;
+    height: 40%;
+    background-color: rgb(255, 255, 255, 0.4);
+    @include flex(column, center, center);
+
+    aside {
+      width: 100%;
+      height: 44%;
+      /* background-color: rgb(245, 222, 179, 0.2); */
+      @include flex(row, flex-start, center);
+      padding: 10px;
+
+      .bee-img {
+        width: 70px;
+        height: 50px;
+      }
+
+      h3 {
+        font-family: $secondary-font-family;
+        color: map-get($style-page-colors, "blue");
+        font-size: 16px;
+        font-weight: 800;
+      }
+    }
+    section {
+      width: 100%;
+      height: 60%;
+     /*  background-color: rgb(189, 146, 67, 0.2); */
+    }
+  }
+  &__section {
+    width: 100%;
+    height: 25%;
+
+    @include flex(row, center, center);
+    gap: 5px;
+
+    article {
+      border-radius: 5px;
+      flex: 1;
+    }
+
+    .info-user {
+      background-color: rgb(255, 255, 255, 0.6);
+    }
+
+    .song-of-the-day {
+      background-color: map-get($style-page-colors, "cyan");
+      opacity: 0.6;
+    }
+
+    .cit-of-the-day {
+      background-color: rgb(245, 222, 179, 0.5);
+    }
+  }
+  &__main {
+    width: 100%;
+    height: 80%;
+    background-color: rgb(0, 255, 255, 0.9);
+  }
+}

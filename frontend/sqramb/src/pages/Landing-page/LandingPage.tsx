@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Frame from '../../components/Frame/Frame';
-import Logo from '../../assets/images/logoImg.png';
+/* import Logo from '../../assets/images/logoImg.png'; */
+import Logo from '../../assets/images/logoSqramb.png';
 import './landingPage.scss';
+import Layout from '../../components/Layout/Layout';
 
 const LandingPage = () => {
   const [loginData, setLoginData] = useState({
@@ -49,8 +51,9 @@ const LandingPage = () => {
   };
   
   return (
+    <Layout>
     <div className="landingPage-container">
-      <Frame />
+{/* <Frame /> */}
       <aside>
         <img src={Logo} alt="logo" className="logo-image" />
       </aside>
@@ -94,8 +97,9 @@ const LandingPage = () => {
           </Link>
         </article>
       </main>
-      <Frame className="frame-special" />
+      {/* <Frame className="frame-special" /> */}
     </div>
+    </Layout>
   );
 };
 
