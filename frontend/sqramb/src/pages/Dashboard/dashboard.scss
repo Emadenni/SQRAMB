@@ -4,6 +4,7 @@
   @include flex(column, center, center);
   gap: 10px;
   width: 100%;
+  overflow-y: auto;
 
   &__header {
     width: 100%;
@@ -52,8 +53,12 @@
       background-color: rgb(255, 255, 255, 0.6);
     }
 
-    .song-of-the-day {
-      background-color: map-get($style-page-colors, "cyan");
+    .radio-of-the-day {
+    /*   background-color: map-get($style-page-colors, "cyan"); */
+    background-image: url(../../assets/images/audio.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 260px;
       opacity: 0.6;
     }
 
