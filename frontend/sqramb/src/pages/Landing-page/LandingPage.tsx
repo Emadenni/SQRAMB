@@ -40,6 +40,7 @@ const LandingPage = () => {
       const data = await response.json();
       const token = data.token;
       const tokenTimestamp = new Date().getTime().toString();
+      localStorage.setItem('userId', data.userId);
       
       localStorage.setItem('token', token);
       localStorage.setItem('tokenTimestamp', tokenTimestamp);

@@ -1,0 +1,38 @@
+@use "./src/sass/" as *;
+
+.infoUserBasic {
+  @include flex(column, center, flex-start);
+  height: 160px;
+  font-family: $primary-font-family;
+  padding: 10px;
+  overflow: hidden;
+
+  img.flag {
+    border-radius: 80%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    width: 50px;
+  }
+
+  &__name {
+    font-size: 32px;
+    font-weight: 600;
+    color: map-get($style-page-colors, "blue");
+  }
+  &__profession {
+    font-size: 18px;
+    font-weight: 400;
+    color: map-get($style-page-colors, "blue");
+  }
+
+  &__city {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+}
+
+.custom-friends-placeholder {
+  align-self: flex-end;
+  margin-top: -36px;
+}

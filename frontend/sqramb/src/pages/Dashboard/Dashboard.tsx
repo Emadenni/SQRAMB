@@ -4,6 +4,7 @@ import beeIcon from "../../assets/images/beeIcon.png";
 import Search from "../../components/Search/Search";
 import Navigation from "../../components/Navigation/Navigation";
 import RadioSelector from "../../components/RadioSelector/RadioSelector";
+import InfoUserBasic from "../../components/InfoUserBasic/InfoUserBasic";
 
 const Dashboard = () => {
   return (
@@ -22,13 +23,15 @@ const Dashboard = () => {
             <section></section>
           </header>
           <section className="dashboard-container__section">
-            <article className="info-user"></article>
+            <article className="info-user">   <InfoUserBasic /></article>
             <article className="radio-of-the-day">
               <RadioSelector />
             </article>
             <article className="cit-of-the-day"></article>
           </section>
-          <main className="dashboard-container__main"> </main>
+          <main className="dashboard-container__main"> 
+       
+          </main>
         </div>
       </Layout>
     </div>

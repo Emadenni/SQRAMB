@@ -19,6 +19,7 @@ interface FormState {
   country: string;
   state: string;
   terms: boolean;
+  profession?: string;
 }
 
 const initialFormState: FormState = {
@@ -34,6 +35,7 @@ const initialFormState: FormState = {
   country: "",
   state: "",
   terms: false,
+  profession: "",
 };
 
 const validationSchema = Yup.object({
@@ -54,6 +56,8 @@ const validationSchema = Yup.object({
   city: Yup.string().required("Required"),
   country: Yup.string().required("Required"),
   terms: Yup.boolean().oneOf([true], "You must accept the terms and conditions").required("Required"),
+  profession: Yup.string().optional(),
+
 });
 
 const RegistrationForm: React.FC = () => {
@@ -66,7 +70,6 @@ const RegistrationForm: React.FC = () => {
     initialValues: initialFormState,
     validationSchema,
     onSubmit: async (values, { setFieldError }) => {
-      // Pulisci i dati prima di inviarli
       const cleanedData = {
         username: values.username.trim(),
         email: values.email.trim().toLowerCase(),
@@ -80,6 +83,7 @@ const RegistrationForm: React.FC = () => {
         country: values.country,
         state: values.state.trim(),
         terms: values.terms,
+        profession: values.profession,
       };
 
       try {
@@ -101,11 +105,11 @@ const RegistrationForm: React.FC = () => {
             throw new Error(data.message || "Failed to register user");
           }
         } else {
-          setRegistrationSuccess(true); 
+          setRegistrationSuccess(true);
           formik.resetForm();
-          alert('Registration successful! Redirecting to login page...');
+          alert("Registration successful! Redirecting to login page...");
           setTimeout(() => {
-            navigate('/');
+            navigate("/");
           }, 2000);
         }
       } catch (error) {
@@ -226,6 +230,17 @@ const RegistrationForm: React.FC = () => {
           {formik.touched.dob && formik.errors.dob ? <div>{formik.errors.dob}</div> : null}
         </div>
 
+        <input
+          type="text"
+          id="profession"
+          name="profession"
+          value={formik.values.profession}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          placeholder="Profession (optional)"
+        />
+        {formik.touched.profession && formik.errors.profession ? <div>{formik.errors.profession}</div> : null}
+
         <select
           id="gender"
           name="gender"
@@ -291,8 +306,6 @@ const RegistrationForm: React.FC = () => {
         <button type="submit">Register</button>
       </form>
       <TermsAndConditions isOpen={isTermsOverlayOpen} onClose={closeTermsOverlay} />
-
-     
     </>
   );
 };
